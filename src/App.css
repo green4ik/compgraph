@@ -26,6 +26,147 @@
 
 .App-link {
   color: #61dafb;
+font-family: Inter;
+font-size: 36px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+}
+.left-elements {
+  display:inline-block;
+  /* background-color: azure; */
+  cursor: pointer;
+  
+}
+.book-image {
+  
+  height: 50px;
+  width: 50px;
+  /* background-color: rebeccapurple; */
+}
+.right-elements {
+  margin-left: auto;
+  /* background-color:  red; */
+  
+}
+.info-image {
+
+  height: 50px;
+  width: 50px;
+  /* background-color:  yellow; */
+}
+.body-content {
+  display: flex;
+  margin-top: 2%;
+}
+.body-buttons {
+  margin-top: 14%;
+  margin-left: 10%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.body-buttons .button {
+  margin-bottom: 20%; 
+}
+.body-image-book {
+  width: 469px;
+height: 439px;
+padding-bottom: 5%;
+margin-top: auto;
+}
+.body-image {
+  
+}
+.right-body {
+  margin-left: 27%;
+  margin-top: 6%;
+}
+.start-button {
+margin-top: 10%;
+margin-left: 13%;
+display: flex;
+align-content: center;
+justify-content: space-between;
+}
+.question-body {
+  height: 50px;
+  width: 50px;
+  margin-top: 5%;
+}
+.slider {
+  background-color: #a5a3ac;
+  width: 31.5%;
+  height:  3px;
+  transform: translateX(-2%);
+}
+.slider .thumb {
+  width: 15px;
+  height: 15px;
+  cursor: grab;
+  background-color: #141466;
+  border-radius: 8px;
+  background-color: rgba(227, 232, 238, 1);
+  border: rgba(193, 201, 210, 1) 2px solid;
+  bottom: -7px;
+}
+.slider .thumb:active {
+  cursor: grabbing;
+}
+.slider-b {
+  margin-top: 20%;
+  margin-left: 10%;
+  
+}
+.thumb-value {
+  position: absolute;
+  bottom: 20px; /* Расстояние от ползунка до текста */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  color: var(--gray-100, #E3E8EE);
+  text-align: center;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 16px; /* 133.333% */
+  background-color: rgba(60, 66, 87, 1);
+  width: 20px;
+  border-radius: 4px;
+background: var(--gray-700, #3C4257);
+/* Light / Elevation 300 */
+box-shadow: 0px 1px 3px 0px rgba(55, 65, 81, 0.10), 0px 1px 2px 0px rgba(55, 65, 81, 0.06);
+}
+.track {
+  height: 100%;
+  background:rgba(193, 201, 210, 1); /* Цвет трека (заполненной части) по умолчанию */
+  cursor: pointer;
+  position: relative;
+  border-radius: 8px;
+  
+}
+.track-0 {
+  
+background: var(--blue-500, #5469D4);
+}
+.track::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: calc(100% - 50%); /* Пример: ширина заполненной части */
+  height: 100%;
+  background: #007BFF; /* Цвет заполненной части */
+  z-index: -1; /* Помещаем заполненную часть под треком */
+}
+.lines {
+  /* background-color: black;  */
+  display: flex;
+  align-items: center; 
+  justify-content: space-between;
+  margin-top:10px;
+  width: 30%;
 }
 
 @keyframes App-logo-spin {
@@ -35,4 +176,74 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.thick-line::before {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 25px; 
+  border-radius: 5px;
+background: linear-gradient(0deg, #C8C8C8 0%, #C8C8C8 100%), #C8C8C8;
+}
+.numbers {
+  display: flex;
+  align-items: center; 
+  justify-content: space-between;
+  margin-top:10px;
+  max-width:  30%;
+  transform: translateX(-9%);
+}
+.thick-number {
+  color: #000000;
+
+text-align: center;
+font-family: Inter;
+font-size: 30px;
+font-style: normal;
+font-weight: 500;
+line-height: 16px; /* 53.333% */
+margin-left: 29px;
+padding: 0;
+}
+.thin-number {
+  color: #000;
+text-align: center;
+font-family: Inter;
+font-size: 20px;
+font-style: normal;
+font-weight: 500;
+line-height: 16px; /* 80% */
+margin-left: 29px;
+padding: 0;
+}
+.slider-name {
+  display: flex;
+  justify-content: center;
+  width: 30%;
+  margin-bottom: 30px;
+  color: #000;
+text-align: center;
+text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+/* font-family: Inter; */
+font-size: 25px;
+font-style: normal;
+font-weight: 700;
+line-height: 16px; /* 53.333% */
+}
+body {
+  overflow: hidden;
+}
+
+.slider-canvas-container {
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+
+.canvasVicsek {
+  width: 500px;
+  height: 500px;
+  border: 1px solid #000000;
+  /* margin-left: 10%; */
 }
