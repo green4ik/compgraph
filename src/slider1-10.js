@@ -7,7 +7,11 @@ function CustomThumb(props) {
     </div>
   );
 }
-export function Slider() {
+export function Slider({ depth, onDepthChange }) {
+
+  const handleDepthChange = (newDepth) => {
+    onDepthChange(newDepth);
+  };
   
   return (
     <div className='slider-b'>
@@ -19,6 +23,7 @@ export function Slider() {
     thumbClassName="thumb"
     trackClassName="track"
     renderThumb={CustomThumb}
+    onChange={handleDepthChange}
 />
 <div className='lines'>
     <div className='thick-line'>&nbsp;</div>

@@ -284,3 +284,15 @@ line-height: 16px; /* 53.333% */
 body {
   overflow: hidden;
 }
+
+
+.slider-canvas-container {
+  display: flex;
+  align-items: center;
+}
+
+.canvasVicsek {
+  width: 500px;
+  height: 500px;
+  border: 1px solid #000000;
+}
