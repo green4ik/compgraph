@@ -1,78 +1,158 @@
 import React, { Component } from 'react';
+import Complex from './Complex';
 
 class NewtonFractal extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      scale: 1,
+      rootColors: [],
+    };
+    this.canvasRef = React.createRef();
+  }
+
+
   componentDidMount() {
     this.drawFractal();
   }
 
-  complexAdd(a, b) {
-    return [a[0] + b[0], a[1] + b[1]];
-  }
-
-  complexSubtract(a, b) {
-    return [a[0] - b[0], a[1] - b[1]];
-  }
-
-  complexMultiply(a, b) {
-    return [
-      a[0] * b[0] - a[1] * b[1],
-      a[0] * b[1] + a[1] * b[0],
-    ];
-  }
-
-  complexDivide(a, b) {
-    const denominator = b[0] * b[0] + b[1] * b[1];
-    return [
-      (a[0] * b[0] + a[1] * b[1]) / denominator,
-      (a[1] * b[0] - a[0] * b[1]) / denominator,
-    ];
-  }
-
-  complexMagnitude(a) {
-    return Math.sqrt(a[0] * a[0] + a[1] * a[1]);
-  }
-
-  drawFractal() {
-    const canvas = this.refs.canvas;
+  pixels(screen, color, pos, thickness) {
+    const canvas = this.canvasRef.current;
     const ctx = canvas.getContext('2d');
-
-    const width = canvas.width;
-    const height = canvas.height;
-
-    const maxIterations = 100;
-    const tolerance = 1e-6;
-
-    for (let x = 0; x < width; x++) {
-      for (let y = 0; y < height; y++) {
-        const zx = (x / width) * 3 - 1.5;
-        const zy = (y / height) * 3 - 1.5;
-        let z = [zx, zy];
-
-        let color = 'black';
-        for (let i = 0; i < maxIterations; i++) {
-          const z4 = this.complexMultiply(z, this.complexMultiply(z, this.complexMultiply(z, z)));
-          const f = this.complexSubtract(z4, [1, 0]);
-          if (this.complexMagnitude(f) < tolerance) {
-            color = this.getColorForIteration(i);
-            break;
-          }
-          const df = this.complexMultiply([4, 0], this.complexMultiply(z, this.complexMultiply(z, z)));
-          z = this.complexSubtract(z, this.complexDivide(f, df));
-        }
-
+    for (let i = -thickness; i < thickness; i++) {
+      for (let j = -thickness; j < thickness; j++) {
         ctx.fillStyle = color;
-        ctx.fillRect(x, y, 1, 1);
+        ctx.fillRect(pos[0] + i, pos[1] + j, 1, 1);
       }
     }
   }
 
-  getColorForIteration(iteration) {
-    const colors = ['red', 'blue', 'purple', 'green'];
-    return colors[iteration % colors.length];
+  newtonIter(f, f1, x0) {
+    let x = x0;
+    if (f1(x) === 0) {
+      return;
+    }
+
+    const t = (y) => (y - x) * f1(x) + f(x);
+    x = x - f(x) / f1(x);
+    return x;
   }
 
+  newtonRepeat(n, f, f1, x0) {
+    let res = x0;
+    for (let i = 0; i < n; i++) {
+      res = this.newtonIter(f, f1, res);
+    }
+    return res;
+  }
+
+  runPG(f, f1, x0, resolution) {
+    const canvas = this.canvasRef.current;
+    const ctx = canvas.getContext('2d');
+
+    const winsize = canvas.width;
+    const side = Math.floor(Math.sqrt(resolution));
+
+    const w1 = Math.floor(winsize / 2);
+    const axisThickness = 3;
+
+    // Set up root colors
+    const rootColors = Array.from({ length: resolution }, () => [
+      Math.floor(Math.random() * 100 + 50),
+      Math.floor(Math.random() * 100 + 50),
+      Math.floor(Math.random() * 100 + 50),
+    ]);
+
+    this.setState({ rootColors });
+
+    this.setState(
+      (prevState) => ({
+        rootColors: prevState.rootColors,
+      }),
+      () => {
+        console.log('Root colors set:', this.state.rootColors);
+        this.drawFractal();
+      }
+    );
+
+    let scale = 1;
+
+    const renderFrame = () => {
+      ctx.clearRect(0, 0, winsize, winsize);
+
+      for (let i = -w1; i < w1; i++) {
+        for (let j = -w1; j < w1; j++) {
+          const x = Math.floor(((i + w1) * side) / winsize);
+          const y = Math.floor(((j + w1) * side) / winsize);
+          const corrValue = Math.floor((side - side / scale) / 2);
+          const [newX, newY] = [
+            Math.floor(x / scale) + corrValue,
+            Math.floor(y / scale) + corrValue,
+          ];
+          const index = newX + side * newY;
+          const [r, g, b] = rootColors[index];
+          ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+          ctx.fillRect(i + w1, j + w1, 1, 1);
+        }
+      }
+
+      requestAnimationFrame(renderFrame);
+    };
+
+    renderFrame();
+  }
+
+  drawFractal() {
+    const canvas = this.canvasRef.current;
+    const ctx = canvas.getContext('2d');
+
+    const winsize = canvas.width;   
+    const side = Math.floor(Math.sqrt(resolution));
+
+    const w1 = Math.floor(winsize / 2);
+
+    this.runPG(
+        (x) => x ** 4 + 5,
+        (x) => 4 * x ** 3,
+        new Complex(-3, 2),
+        600
+      );
+  }
+
+  handleZoomIn = () => {
+    this.setState(
+      (prevState) => ({ scale: prevState.scale + 0.5 }),
+      () => this.drawFractal()
+    );
+  };
+
+  handleZoomOut = () => {
+    this.setState(
+      (prevState) => ({ scale: Math.max(1, prevState.scale - 0.5) }),
+      () => this.drawFractal()
+    );
+  };
+
+  handleColorChange = () => {
+    const resolution = 600;
+    const rootColors = Array.from({ length: resolution }, () => [
+      Math.floor(Math.random() * 100 + 50),
+      Math.floor(Math.random() * 100 + 50),
+      Math.floor(Math.random() * 100 + 50),
+    ]);
+
+    this.setState({ rootColors }, () => this.drawFractal());
+  };
+
   render() {
-    return <canvas ref="canvas" width={800} height={800} />;
+    return (
+      <div>
+        <canvas ref={this.canvasRef} width={500} height={500} />
+        <button onClick={this.handleZoomIn}>Zoom In</button>
+        <button onClick={this.handleZoomOut}>Zoom Out</button>
+        <button onClick={this.handleColorChange}>Change Colors</button>
+      </div>
+    );
   }
 }
 

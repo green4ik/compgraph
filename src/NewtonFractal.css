@@ -1,0 +1,18 @@
+.fractal-canvas {
+    border: 1px solid #333; /* Add a border to the canvas */
+    margin: 10px;
+  }
+  
+  button {
+    margin: 5px;
+    padding: 10px;
+    background-color: #007BFF; /* Blue background color for buttons */
+    color: white; /* White text color for buttons */
+    border: none; /* Remove button borders */
+    cursor: pointer; /* Show a pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth background color transition */
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Darker blue on button hover */
+  }
