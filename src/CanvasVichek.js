@@ -74,7 +74,7 @@ class CanvasVichek extends Component {
           height="500"
           style={{ border: '1px solid #000000' }}
         />
-        <button onClick={this.handleSaveImage}>Save Image</button>
+        <button className='save-image-fractal' onClick={this.handleSaveImage}>Save Image</button>
       </div>
     );
   }
