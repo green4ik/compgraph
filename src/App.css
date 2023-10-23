@@ -249,6 +249,7 @@ background: linear-gradient(0deg, #C8C8C8 0%, #C8C8C8 100%), #C8C8C8;
   /* max-width:  30%; */
   transform: translateX(-23.2%);
 }
+
 .thick-number {
   color: #000000;
 
@@ -338,4 +339,85 @@ body {
   height: 500px;
   border: 1px solid #000000;
   margin-left: auto;
+}
+
+.button-container {
+  position: absolute;
+  bottom: 50px;
+  left: 75px;
+  display: flex;
+  justify-content: space-between;
+  width: 350px;
+}
+
+.vichek-button,
+.newton-button {
+  display: inline-block;
+  width: 350px;
+  height: 100px;
+  border-radius: 15px;
+  border-color: rgb(20, 20, 102);
+  stroke-width: 3px;
+  stroke: #141466;
+  color: #DADAE6;
+  font-size: 36px;
+  font-weight: 700;
+  word-wrap: break-word;
+  filter: drop-shadow(0px 10px 4px rgba(0, 0, 0, 0.25));
+  cursor: pointer;
+  background-color: rgb(67, 69, 198);
+  color: white;
+}
+
+.active-vichek-button,
+.active-newton-button {
+  display: inline-block;
+  width: 350px;
+  height: 100px;
+  border-radius: 15px;
+  border-color: rgb(20, 20, 102);
+  stroke-width: 3px;
+  stroke: #141466;
+  color: #DADAE6;
+  font-size: 36px;
+  font-weight: 700;
+  word-wrap: break-word;
+  filter: drop-shadow(0px 10px 4px rgba(0, 0, 0, 0.25));
+  cursor: pointer;
+  background-color:white;
+  color: #141466;;
+}
+
+
+.newton-thick-number {
+  color: #000000;
+
+text-align: center;
+font-family: Inter;
+font-size: 25px;
+font-style: normal;
+font-weight: 500;
+line-height: 16px; /* 53.333% */
+/* margin-left: 30%; */
+margin-right: 3%;
+padding: 0;
+}
+.newton-thin-number {
+  color: #000;
+text-align: center;
+font-family: Inter;
+font-size: 15px;
+font-style: normal;
+font-weight: 500;
+line-height: 16px; /* 80% */
+margin-right: 6.8%;
+padding: 0;
+}
+
+.sliderzoom {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 100px;
+  margin-right: 40%;
 }

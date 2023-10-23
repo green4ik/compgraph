@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import ReactSlider from 'react-slider';
 import { BackMenu } from './background';
-import { Slider } from './slider1-10';
+import { Slider } from './Sliders/slider1-10';
 import CanvasVichek from './CanvasVichek';
 import QuestionImage from './images/question.png';
 import BackImage from './images/back.png';
 import { Link, useNavigate } from 'react-router-dom';
+import { Button } from './Button';
 import './App.css';
 
 export function FractalPage1() {
@@ -19,13 +20,17 @@ export function FractalPage1() {
     <div>
       <BackMenu text="Фрактали" />
       <div className='slider-canvas-container'>
-        <div onClick={() => navigate('/home1')} className='images-above'> 
-            <img className = 'book-image right'src = {BackImage}></img>
-            <img className = 'book-image left'src = {QuestionImage}></img>
+        <div onClick={() => navigate('/home1')} className='images-above'>
+          <img className='book-image right' src={BackImage} alt="Back" />
+          <img className='book-image left' src={QuestionImage} alt="Question" />
         </div>
         <Slider depth={depth} onDepthChange={handleDepthChange} />
         <div className='canvasVicsek'>
-        <CanvasVichek depth={depth}  />
+          <CanvasVichek depth={depth} />
+        </div>
+        <div className='button-container'>
+          <Button text="Vicsek" className= "active-vichek-button" />
+          <Button text="Newton" className= "newton-button" />
         </div>
       </div>
     </div>

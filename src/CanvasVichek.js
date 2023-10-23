@@ -36,23 +36,23 @@ class CanvasVichek extends Component {
   }
 
   drawCanvas(depth) {
-    const canvas = this.canvasRef.current; // Access the canvas element using the ref
+    const canvas = this.canvasRef.current;
     const ctx = canvas.getContext('2d');
     const size = Math.min(canvas.width, canvas.height);
     const x = (canvas.width - size) / 2;
     const y = (canvas.height - size) / 2;
 
-    this.clearCanvas(ctx); // Clear the canvas
+    this.clearCanvas(ctx);
     this.drawSaltire(ctx, depth, x, y, size);
   }
 
   clearCanvas(ctx) {
-    const canvas = this.canvasRef.current; // Access the canvas element using the ref
+    const canvas = this.canvasRef.current;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
   handleSaveImage = () => {
-    const canvas = this.canvasRef.current; // Access the canvas element using the ref
+    const canvas = this.canvasRef.current;
 
     if (canvas) {
       const dataURL = canvas.toDataURL('image/png');
