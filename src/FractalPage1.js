@@ -30,7 +30,7 @@ export function FractalPage1() {
         </div>
         <div className='button-container'>
           <Button text="Vicsek" className= "active-vichek-button" />
-          <Button text="Newton" className= "newton-button" />
+          <Button link = "/fractal2" text="Newton" className= "newton-button" />
         </div>
       </div>
     </div>

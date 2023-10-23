@@ -46,7 +46,7 @@ export function FractalPage2() {
             <CanvasNewton constant={constant} zoom={zoom} selectedColors={selectedColors} />
         </div>
         <div className='button-container'>
-          <Button text="Фрактал Вічека" className= "vichek-button" />
+          <Button  link = "/fractal1"text="Фрактал Вічека" className= "vichek-button" />
           <Button text="Фрактал Ньютона" className= "active-newton-button" />
         </div>
       </div>

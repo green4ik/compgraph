@@ -17,7 +17,8 @@ function App() {
     <Route path="/" element={<Navigate to="/home" />} />
       <Route path = "/home" element = {<MainPage/>}/>
       <Route path = "/home1" element = {<MainPage1/>}/>
-      <Route path = "/fractal1" element = {<FractalPage2/>}/>
+      <Route path = "/fractal1" element = {<FractalPage1/>}/>
+      <Route path = "/fractal2" element = {<FractalPage2/>}/>
       <Route path = "*" element = {<BackMenu/>}/>
     </Routes>
     </>
