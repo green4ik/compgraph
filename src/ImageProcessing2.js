@@ -6,12 +6,11 @@ const ImageProcessing2 = () => {
   const [image, setImage] = useState(null);
   const [points, setPoints] = useState([]);
   const [previewImage, setPreviewImage] = useState(null);
-  const [cyan,setCyan] = useState(0);
-  const [magenta,setMagenta] = useState(0);
-  const [yellow,setYellow] = useState(0);
-  const [black,setBlack] = useState(0);
-
-  
+  const [cyan, setCyan] = useState(0);
+  const [magenta, setMagenta] = useState(0);
+  const [yellow, setYellow] = useState(0);
+  const [black, setBlack] = useState(0);
+  const [pointedPixel, setPointedPixel] = useState(null);
 
   const onDrop = (acceptedFiles) => {
     const reader = new FileReader();
@@ -31,16 +30,12 @@ const ImageProcessing2 = () => {
   };
 
   const isYellow = (r, g, b) => {
-    
     const cmyk = convert.rgb.cmyk(r, g, b);
-    // console.log(cmyk[0],cmyk[1],cmyk[2],cmyk[3]);
-    return cmyk[0] <=15 && cmyk[2] >= 40 && cmyk[1] <=40 && cmyk[3] <= 20;
-    
+    return cmyk[0] <= 15 && cmyk[2] >= 40 && cmyk[1] <= 40 && cmyk[3] <= 20;
   };
 
   const handleColorTransformation = () => {
     if (image) {
-    
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
 
@@ -56,15 +51,14 @@ const ImageProcessing2 = () => {
         const isYellowPixel = isYellow(data[i], data[i + 1], data[i + 2]);
 
         if (isYellowPixel) {
-        //alert("1");
           const cmyk = convert.rgb.cmyk(data[i], data[i + 1], data[i + 2]);
 
-          // Adjust lightness, intensity, and hue
-          cmyk[3] = black   ; // Adjust black (K) for intensity
+          // Adjust CMYK values
+          cmyk[3] = black; // Adjust black (K) for intensity
           cmyk[0] = cyan; // Adjust cyan
           cmyk[1] = magenta; // Adjust magenta
           cmyk[2] = yellow; // Adjust yellow
-         
+
           const rgb = convert.cmyk.rgb(cmyk);
 
           data[i] = rgb[0];
@@ -94,9 +88,34 @@ const ImageProcessing2 = () => {
     }
   };
 
+  const handleMouseMove = (e) => {
+    if (previewImage) {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+  
+      canvas.width = previewImage.width;
+      canvas.height = previewImage.height;
+  
+      ctx.drawImage(previewImage, 0, 0, previewImage.width, previewImage.height);
+  
+      const x = e.nativeEvent.offsetX;
+      const y = e.nativeEvent.offsetY;
+  
+      const pixel = ctx.getImageData(x, y, 1, 1).data;
+  
+      setPointedPixel({
+        x,
+        y,
+        rgb:  [pixel[0], pixel[1], pixel[2]],
+        cmyk: convert.rgb.cmyk(pixel[0], pixel[1], pixel[2]),
+        hsl: convert.rgb.hsl(pixel[0], pixel[1], pixel[2]),
+      });
+    }
+  };
+
   useEffect(() => {
-    handleColorTransformation(); // Trigger transformation when lightness, intensity, or hue changes
-  }, [cyan,magenta,yellow,black]);
+    handleColorTransformation(); // Trigger transformation when cyan, magenta, yellow, or black changes
+  }, [cyan, magenta, yellow, black]);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
@@ -110,7 +129,22 @@ const ImageProcessing2 = () => {
       {image && (
         <div>
           {/* Display image */}
-          <img src={previewImage ? previewImage.src : image.src} alt="Uploaded" style={imageStyles} />
+          <div style={{ position: 'relative' }}>
+            <img
+              src={previewImage ? previewImage.src : image.src}
+              alt="Uploaded"
+              style={imageStyles}
+              onMouseMove={handleMouseMove}
+            />
+            {pointedPixel && (
+              <div style={pointInfoStyles}>
+                <p>{`Point: (${pointedPixel.x}, ${pointedPixel.y})`}</p>
+                <p>{`RGB: R-${pointedPixel.rgb[0]}, G-${pointedPixel.rgb[1]}, B-${pointedPixel.rgb[2]}`}</p>
+                <p>{`CMYK: C-${pointedPixel.cmyk[0]}, M-${pointedPixel.cmyk[1]}, Y-${pointedPixel.cmyk[2]}, K-${pointedPixel.cmyk[3]}`}</p>
+                <p>{`HSL: H-${pointedPixel.hsl[0]}, S-${pointedPixel.hsl[1]}, L-${pointedPixel.hsl[2]}`}</p>
+              </div>
+            )}
+          </div>
 
           {/* Display points */}
           <ul>
@@ -119,7 +153,7 @@ const ImageProcessing2 = () => {
             ))}
           </ul>
 
-          {/* Hue, Lightness, and Intensity input fields */}
+          {/* Cyan, Magenta, Yellow, and Black input fields */}
           <label>
             Cyan:
             <input
@@ -130,7 +164,6 @@ const ImageProcessing2 = () => {
               value={cyan}
               onChange={(e) => setCyan(Number(e.target.value))}
             />
-           
           </label>
           <label>
             Magenta:
@@ -142,8 +175,8 @@ const ImageProcessing2 = () => {
               value={magenta}
               onChange={(e) => setMagenta(Number(e.target.value))}
             />
-           
-          </label><label>
+          </label>
+          <label>
             Yellow:
             <input
               type="range"
@@ -153,9 +186,9 @@ const ImageProcessing2 = () => {
               value={yellow}
               onChange={(e) => setYellow(Number(e.target.value))}
             />
-           
-          </label><label>
-            Key:
+          </label>
+          <label>
+            Black:
             <input
               type="range"
               min="0"
@@ -164,12 +197,10 @@ const ImageProcessing2 = () => {
               value={black}
               onChange={(e) => setBlack(Number(e.target.value))}
             />
-           
           </label>
-         
 
           {/* Buttons for color transformation and saving */}
-          <button onClick={handleColorTransformation}>Transform Color</button>
+          {/* <button onClick={handleColorTransformation}>Transform Color</button> */}
           <button onClick={handleSaveImage}>Save Image</button>
         </div>
       )}
@@ -189,6 +220,15 @@ const uploadButtonStyles = {
 const imageStyles = {
   maxWidth: '100%',
   marginTop: '20px',
+};
+
+const pointInfoStyles = {
+  position: 'absolute',
+  top: '0',
+  left: '0',
+  background: 'rgba(255, 255, 255, 0.8)',
+  padding: '5px',
+  borderRadius: '5px',
 };
 
 export default ImageProcessing2;
