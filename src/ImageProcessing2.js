@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import convert from 'color-convert';
 
-const ImageProcessing = () => {
+const ImageProcessing2 = () => {
   const [image, setImage] = useState(null);
   const [points, setPoints] = useState([]);
-  const [lightness, setLightness] = useState(0);
-  const [intensity, setIntensity] = useState(0);
   const [previewImage, setPreviewImage] = useState(null);
-  const [hue, setHue] = useState(0);
-  const handleHueChange = (event) => {
-    setHue(event.target.value);
-  };
+  const [cyan,setCyan] = useState(0);
+  const [magenta,setMagenta] = useState(0);
+  const [yellow,setYellow] = useState(0);
+  const [black,setBlack] = useState(0);
+
+  
+
   const onDrop = (acceptedFiles) => {
     const reader = new FileReader();
 
@@ -30,57 +31,56 @@ const ImageProcessing = () => {
   };
 
   const isYellow = (r, g, b) => {
-    const hsl = convert.rgb.hsl(r, g, b);
-    return hsl[0] >= 40 && hsl[0] <= 80; // Adjust these values based on your yellow color range
+    
+    const cmyk = convert.rgb.cmyk(r, g, b);
+    // console.log(cmyk[0],cmyk[1],cmyk[2],cmyk[3]);
+    return cmyk[0] <=15 && cmyk[2] >= 40 && cmyk[1] <=40 && cmyk[3] <= 20;
+    
   };
 
   const handleColorTransformation = () => {
     if (image) {
+    
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
-  
+
       canvas.width = image.width;
       canvas.height = image.height;
-  
+
       ctx.drawImage(image, 0, 0, image.width, image.height);
-  
+
       const imageData = ctx.getImageData(0, 0, image.width, image.height);
       const data = imageData.data;
-  
+
       for (let i = 0; i < data.length; i += 4) {
         const isYellowPixel = isYellow(data[i], data[i + 1], data[i + 2]);
-  
+
         if (isYellowPixel) {
-          const hsl = convert.rgb.hsl(data[i], data[i + 1], data[i + 2]);
-  
+        //alert("1");
+          const cmyk = convert.rgb.cmyk(data[i], data[i + 1], data[i + 2]);
+
           // Adjust lightness, intensity, and hue
-          hsl[2] += lightness;
-          hsl[1] += intensity;
-          hsl[0] = hue; // Adjust hue
-          
-          hsl[0] = Math.min(360, Math.max(0, hsl[0]));
-    
+          cmyk[3] = black   ; // Adjust black (K) for intensity
+          cmyk[0] = cyan; // Adjust cyan
+          cmyk[1] = magenta; // Adjust magenta
+          cmyk[2] = yellow; // Adjust yellow
          
-          // Ensure hue is within the valid range [0, 360]
-          hsl[0] = (hsl[0] + 360) % 360;
-  
-          const rgb = convert.hsl.rgb(hsl);
-  
+          const rgb = convert.cmyk.rgb(cmyk);
+
           data[i] = rgb[0];
           data[i + 1] = rgb[1];
           data[i + 2] = rgb[2];
         }
       }
-  
+
       ctx.putImageData(imageData, 0, 0);
-  
+
       // Create a new Image object for the preview
       const newPreviewImage = new Image();
       newPreviewImage.src = canvas.toDataURL();
       setPreviewImage(newPreviewImage); // Update the preview image
     }
   };
-  
 
   const handleSaveImage = () => {
     if (previewImage) {
@@ -95,8 +95,8 @@ const ImageProcessing = () => {
   };
 
   useEffect(() => {
-    handleColorTransformation(); // Trigger transformation when lightness or intensity changes
-  }, [lightness, intensity, hue]);
+    handleColorTransformation(); // Trigger transformation when lightness, intensity, or hue changes
+  }, [cyan,magenta,yellow,black]);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
@@ -119,37 +119,54 @@ const ImageProcessing = () => {
             ))}
           </ul>
 
-          {/* Lightness and Intensity input fields */}
+          {/* Hue, Lightness, and Intensity input fields */}
           <label>
-            Hue:
-          <input
-          type="range"
-          min="0"
-          max="360"
-          value={hue}
-          onChange={handleHueChange}
-          />
-   </label>
-          <label>
-            Lightness:
-            <input
-               type="range"
-               min="-20"
-               max="20"
-              value={lightness}
-              onChange={(e) => setLightness(Number(e.target.value))}
-            />
-          </label>
-          <label>
-            Intensity:
+            Cyan:
             <input
               type="range"
-              min="-20"
-              max="20"
-              value={intensity}
-              onChange={(e) => setIntensity(Number(e.target.value))}
+              min="0"
+              max="100"
+              step={5}
+              value={cyan}
+              onChange={(e) => setCyan(Number(e.target.value))}
             />
+           
           </label>
+          <label>
+            Magenta:
+            <input
+              type="range"
+              min="0"
+              max="100"
+              step={5}
+              value={magenta}
+              onChange={(e) => setMagenta(Number(e.target.value))}
+            />
+           
+          </label><label>
+            Yellow:
+            <input
+              type="range"
+              min="0"
+              max="100"
+              step={5}
+              value={yellow}
+              onChange={(e) => setYellow(Number(e.target.value))}
+            />
+           
+          </label><label>
+            Key:
+            <input
+              type="range"
+              min="0"
+              max="100"
+              step={5}
+              value={black}
+              onChange={(e) => setBlack(Number(e.target.value))}
+            />
+           
+          </label>
+         
 
           {/* Buttons for color transformation and saving */}
           <button onClick={handleColorTransformation}>Transform Color</button>
@@ -174,4 +191,4 @@ const imageStyles = {
   marginTop: '20px',
 };
 
-export default ImageProcessing;
+export default ImageProcessing2;

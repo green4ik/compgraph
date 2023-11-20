@@ -6,6 +6,8 @@ import { MainPage1 } from './MainPage1';
 import { FractalPage1 } from './FractalPage1';
 import {FractalPage2} from './FractalPage2'
 import { ColorPage1 } from './ColorPage1';
+import ColorPicker from './ColorPicker';
+import { ColorPage2 } from './ColorPage2';
 function App() {
   return (
    <>
@@ -15,8 +17,11 @@ function App() {
     <Route path="/" element={<Navigate to="/home" />} />
       <Route path = "/home" element = {<MainPage/>}/>
       <Route path = "/home1" element = {<MainPage1/>}/>
-      <Route path = "/fractal1" element = {<ColorPage1/>}/>
+      <Route path = "/fractal1" element = {<FractalPage1/>}/>
       <Route path = "/fractal2" element = {<FractalPage2/>}/>
+      <Route path = "/color1" element = {<ColorPage1/>}/>
+      <Route path = "/color2" element = {<ColorPage2/>}/>
+      <Route path = "/test" element = {<ColorPicker/>}/>
       <Route path = "*" element = {<BackMenu/>}/>
     </Routes>
     </>
