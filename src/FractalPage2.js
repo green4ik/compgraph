@@ -33,15 +33,15 @@ export function FractalPage2() {
     <div>
       <BackMenu text="Фрактали" />
       <div className='slider-canvas-container'>
-        <div onClick={() => navigate('/home1')} className='images-above'>
+        <div  className='images-above'>
           <img className='book-image right' src={BackImage} alt="Back" />
           <img className='book-image left' src={QuestionImage} alt="Question" />
         </div>
             <SliderNewton onConstantChange={handleConstantChange} />
-            <div className='sliderzoom'>
-            <SliderZoom className="zoom" onZoomChange={handleZoomChange}/>
-            <ColorPicker colors={selectedColors} onColorsChange={handleColorsChange} />
-            </div>
+            {/* <div className='sliderzoom'> */}
+            {/* <SliderZoom className='zoom' onZoomChange={handleZoomChange}/> */}
+            {/* <ColorPicker colors={selectedColors} onColorsChange={handleColorsChange} /> */}
+            {/* </div> */}
         <div className='canvasVicsek'>
             <CanvasNewton constant={constant} zoom={zoom} selectedColors={selectedColors} />
         </div>

@@ -37,7 +37,7 @@ export function SliderZoom({onZoomChange}) {
     <div className='thin-line'>&nbsp;</div>
     <div className='thick-line'>&nbsp;</div>
 </div>
-<div className='numbers'>
+<div className='numbers2'>
     <div className='newton-thick-number'>1</div>
     <div className='newton-thin-number'>10</div>
     <div className='newton-thin-number'>20</div>

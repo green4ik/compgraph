@@ -102,7 +102,7 @@ const ImageProcessing = () => {
 
   return (
     <div>
-      <button {...getRootProps()} style={uploadButtonStyles}>
+      <button {...getRootProps()} className='upload-save'>
         <input {...getInputProps()} />
         Upload Image
       </button>

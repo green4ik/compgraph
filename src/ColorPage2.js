@@ -11,6 +11,11 @@ export function ColorPage2() {
 
   return (
     <div>
+      <BackMenu text = "Колірні схеми"/>
+      <div  className='images-above'>
+          <img className='book-image right' src={BackImage} alt="Back" />
+          <img className='book-image left' src={QuestionImage} alt="Question" />
+        </div>
         <ImageProcessing2/>
     </div>
   );

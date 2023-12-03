@@ -3,6 +3,7 @@ import { BackMenu } from './background';
 import { Routes, Route, Link, Navigate} from 'react-router-dom';
 import { MainPage } from './MainPage';
 import { MainPage1 } from './MainPage1';
+import { MainPage2 } from './MainPage2';
 import { FractalPage1 } from './FractalPage1';
 import {FractalPage2} from './FractalPage2'
 import { ColorPage1 } from './ColorPage1';
@@ -17,6 +18,7 @@ function App() {
     <Route path="/" element={<Navigate to="/home" />} />
       <Route path = "/home" element = {<MainPage/>}/>
       <Route path = "/home1" element = {<MainPage1/>}/>
+      <Route path = "/home2" element = {<MainPage2/>}/>
       <Route path = "/fractal1" element = {<FractalPage1/>}/>
       <Route path = "/fractal2" element = {<FractalPage2/>}/>
       <Route path = "/color1" element = {<ColorPage1/>}/>
