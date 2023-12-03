@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import convert from 'color-convert';
-
+import EmptyImage from './images/empty.png';
+import { Button } from './Button';
+function CustomThumb(props) {
+  return (
+    <div {...props} className="thumb">
+      <div className="thumb-value">{props['aria-valuenow']}</div>
+    </div>
+  );
+}
 const ImageProcessing2 = () => {
   const [image, setImage] = useState(null);
   const [points, setPoints] = useState([]);
-  const [previewImage, setPreviewImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(EmptyImage);
   const [cyan, setCyan] = useState(0);
   const [magenta, setMagenta] = useState(0);
   const [yellow, setYellow] = useState(0);
@@ -28,7 +36,11 @@ const ImageProcessing2 = () => {
 
     reader.readAsDataURL(acceptedFiles[0]);
   };
-
+  const setDefault = () => {
+    const img = new Image();
+    img.src = EmptyImage;
+    setPreviewImage(img);
+  } 
   const isYellow = (r, g, b) => {
     const cmyk = convert.rgb.cmyk(r, g, b);
     return cmyk[0] <= 15 && cmyk[2] >= 40 && cmyk[1] <= 40 && cmyk[3] <= 20;
@@ -118,92 +130,94 @@ const ImageProcessing2 = () => {
   }, [cyan, magenta, yellow, black]);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const [gradientValue, setGradientValue] = useState(50);
 
+  const handleSliderChange = (event) => {
+    setGradientValue(event.target.value);
+  };
+
+  const getGradient = () => {
+    return `linear-gradient(to right, #ff0000 0%, #ffff00 ${gradientValue}%, #ffffff ${gradientValue}%, #ffffff 100%)`;
+  };
   return (
-    <div>
-      <button {...getRootProps()} style={uploadButtonStyles}>
-        <input {...getInputProps()} />
-        Upload Image
-      </button>
+    
+    <div className='color-body'>
+       <div>
+         
+         {/* Display image */} <div style={{ position: 'relative' }}>
+         <img src={previewImage ? previewImage.src : image.src} alt="Uploaded" className='color-image' onMouseMove={handleMouseMove}/>
+        
+          </div>
+         {/* Display points */}
+         <ul>
+           {points.map((point, index) => (
+             <li key={index}>{`Point ${index + 1}: (${point.x}, ${point.y})`}</li>
+           ))}
+         </ul>
 
-      {image && (
-        <div>
-          {/* Display image */}
-          <div style={{ position: 'relative' }}>
-            <img
-              src={previewImage ? previewImage.src : image.src}
-              alt="Uploaded"
-              style={imageStyles}
-              onMouseMove={handleMouseMove}
-            />
-            {pointedPixel && (
-              <div style={pointInfoStyles}>
+         {/* Hue, Lightness, and Intensity input fields */}
+         
+
+         {/* Buttons for color transformation and saving */}
+         </div>
+      <div className="slider-container12">
+      <input
+       type="range"
+       min="0"
+       max="100"
+       step={5}
+       value={cyan}
+       onChange={(e) => setCyan(Number(e.target.value))}
+       renderThumb={CustomThumb}
+        className="slider1 s2"
+      />
+       <input
+       type="range"
+       min="0"
+       max="100"
+       step={5}
+       value={magenta}
+       onChange={(e) => setMagenta(Number(e.target.value))}
+        className="slider1 s3"
+      />
+       <input
+       type="range"
+       min="0"
+       max="100"
+       step={5}
+       value={yellow}
+       onChange={(e) => setYellow(Number(e.target.value))}
+        className="slider1 s4"
+      />
+       <input
+       type="range"
+       min="0"
+       max="100"
+       step={5}
+       value={black}
+       onChange={(e) => setBlack(Number(e.target.value))}
+        className="slider1 s5"
+      />
+    </div>
+    {pointedPixel && (
+              <div className = "xd"style={pointInfoStyles}>
                 <p>{`Point: (${pointedPixel.x}, ${pointedPixel.y})`}</p>
                 <p>{`RGB: R-${pointedPixel.rgb[0]}, G-${pointedPixel.rgb[1]}, B-${pointedPixel.rgb[2]}`}</p>
                 <p>{`CMYK: C-${pointedPixel.cmyk[0]}, M-${pointedPixel.cmyk[1]}, Y-${pointedPixel.cmyk[2]}, K-${pointedPixel.cmyk[3]}`}</p>
                 <p>{`HSL: H-${pointedPixel.hsl[0]}, S-${pointedPixel.hsl[1]}, L-${pointedPixel.hsl[2]}`}</p>
               </div>
             )}
+       
+        
+        <div className='color-container'>
+          <Button link = "/color1"text="HSL" className= "vichek-button upload-save" />
+          <Button  text="CMYK" className= "active-newton-button upload-save" />
+          <button {...getRootProps()} className='upload-save ml'>
+        <input {...getInputProps()} />
+        Upload Image
+      </button>
+          <button onClick={handleSaveImage} className='upload-save'>Save Image</button>
           </div>
-
-          {/* Display points */}
-          <ul>
-            {points.map((point, index) => (
-              <li key={index}>{`Point ${index + 1}: (${point.x}, ${point.y})`}</li>
-            ))}
-          </ul>
-
-          {/* Cyan, Magenta, Yellow, and Black input fields */}
-          <label>
-            Cyan:
-            <input
-              type="range"
-              min="0"
-              max="100"
-              step={5}
-              value={cyan}
-              onChange={(e) => setCyan(Number(e.target.value))}
-            />
-          </label>
-          <label>
-            Magenta:
-            <input
-              type="range"
-              min="0"
-              max="100"
-              step={5}
-              value={magenta}
-              onChange={(e) => setMagenta(Number(e.target.value))}
-            />
-          </label>
-          <label>
-            Yellow:
-            <input
-              type="range"
-              min="0"
-              max="100"
-              step={5}
-              value={yellow}
-              onChange={(e) => setYellow(Number(e.target.value))}
-            />
-          </label>
-          <label>
-            Black:
-            <input
-              type="range"
-              min="0"
-              max="100"
-              step={5}
-              value={black}
-              onChange={(e) => setBlack(Number(e.target.value))}
-            />
-          </label>
-
-          {/* Buttons for color transformation and saving */}
-          {/* <button onClick={handleColorTransformation}>Transform Color</button> */}
-          <button onClick={handleSaveImage}>Save Image</button>
-        </div>
-      )}
     </div>
   );
 };

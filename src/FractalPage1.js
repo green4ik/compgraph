@@ -20,8 +20,8 @@ export function FractalPage1() {
     <div>
       <BackMenu text="Фрактали" />
       <div className='slider-canvas-container'>
-        <div onClick={() => navigate('/home1')} className='images-above'>
-          <img className='book-image right' src={BackImage} alt="Back" />
+        <div  className='images-above'>
+          
           <img className='book-image left' src={QuestionImage} alt="Question" />
         </div>
         <Slider depth={depth} onDepthChange={handleDepthChange} />
@@ -29,8 +29,8 @@ export function FractalPage1() {
           <CanvasVichek depth={depth} />
         </div>
         <div className='button-container'>
-          <Button text="Vicsek" className= "active-vichek-button" />
-          <Button link = "/fractal2" text="Newton" className= "newton-button" />
+          <Button text="Фрактал Вічека" className= "active-vichek-button" />
+          <Button link = "/fractal2" text="Фрактал Ньютона" className= "newton-button" />
         </div>
       </div>
     </div>
