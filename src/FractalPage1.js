@@ -21,7 +21,7 @@ export function FractalPage1() {
       <BackMenu text="Фрактали" />
       <div className='slider-canvas-container'>
         <div  className='images-above'>
-          <img className='book-image right' src={BackImage} alt="Back" />
+          
           <img className='book-image left' src={QuestionImage} alt="Question" />
         </div>
         <Slider depth={depth} onDepthChange={handleDepthChange} />

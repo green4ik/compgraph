@@ -146,14 +146,7 @@ const ImageProcessing2 = () => {
          
          {/* Display image */} <div style={{ position: 'relative' }}>
          <img src={previewImage ? previewImage.src : image.src} alt="Uploaded" className='color-image' onMouseMove={handleMouseMove}/>
-         {pointedPixel && (
-              <div style={pointInfoStyles}>
-                <p>{`Point: (${pointedPixel.x}, ${pointedPixel.y})`}</p>
-                <p>{`RGB: R-${pointedPixel.rgb[0]}, G-${pointedPixel.rgb[1]}, B-${pointedPixel.rgb[2]}`}</p>
-                <p>{`CMYK: C-${pointedPixel.cmyk[0]}, M-${pointedPixel.cmyk[1]}, Y-${pointedPixel.cmyk[2]}, K-${pointedPixel.cmyk[3]}`}</p>
-                <p>{`HSL: H-${pointedPixel.hsl[0]}, S-${pointedPixel.hsl[1]}, L-${pointedPixel.hsl[2]}`}</p>
-              </div>
-            )}
+        
           </div>
          {/* Display points */}
          <ul>
@@ -206,7 +199,14 @@ const ImageProcessing2 = () => {
         className="slider1 s5"
       />
     </div>
-      
+    {pointedPixel && (
+              <div className = "xd"style={pointInfoStyles}>
+                <p>{`Point: (${pointedPixel.x}, ${pointedPixel.y})`}</p>
+                <p>{`RGB: R-${pointedPixel.rgb[0]}, G-${pointedPixel.rgb[1]}, B-${pointedPixel.rgb[2]}`}</p>
+                <p>{`CMYK: C-${pointedPixel.cmyk[0]}, M-${pointedPixel.cmyk[1]}, Y-${pointedPixel.cmyk[2]}, K-${pointedPixel.cmyk[3]}`}</p>
+                <p>{`HSL: H-${pointedPixel.hsl[0]}, S-${pointedPixel.hsl[1]}, L-${pointedPixel.hsl[2]}`}</p>
+              </div>
+            )}
        
         
         <div className='color-container'>

@@ -12,13 +12,11 @@ export function ColorPage1() {
   return (
     <div>
       <BackMenu text = "Колірні схеми"/>
-        <ImageProcessing/>
-
-        <div className='button-container'>
-          <Button text="HSL" className= "active-vichek-button" />
-          <Button link = "/color2" text="CMYK" className= "newton-button" />
-          
+      <div  className='images-above'>
+         
+          <img className='book-image left' src={QuestionImage} alt="Question" />
         </div>
+        <ImageProcessing/>
     </div>
   );
 }
