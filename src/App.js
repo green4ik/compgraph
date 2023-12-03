@@ -8,6 +8,7 @@ import {FractalPage2} from './FractalPage2'
 import { ColorPage1 } from './ColorPage1';
 import ColorPicker from './ColorPicker';
 import { ColorPage2 } from './ColorPage2';
+import {FigurePage} from './FigurePage';
 function App() {
   return (
    <>
@@ -19,6 +20,7 @@ function App() {
       <Route path = "/home1" element = {<MainPage1/>}/>
       <Route path = "/fractal1" element = {<FractalPage1/>}/>
       <Route path = "/fractal2" element = {<FractalPage2/>}/>
+      <Route path = "/figure" element = {<FigurePage/>}/>
       <Route path = "/color1" element = {<ColorPage1/>}/>
       <Route path = "/color2" element = {<ColorPage2/>}/>
       <Route path = "/test" element = {<ColorPicker/>}/>

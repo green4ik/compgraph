@@ -176,8 +176,8 @@ const ImageProcessing = () => {
             Lightness:
             <input
               type="range"
-              min="-20"
-              max="20"
+              min="0"
+              max="100"
               value={lightness}
               onChange={(e) => setLightness(Number(e.target.value))}
             />
