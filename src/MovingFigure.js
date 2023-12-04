@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-
+import { BackMenu } from './background';
+import QuestionImage from './images/question.png';
+import { Button } from './Button';
 class Parallelogram extends Component {
     render() {
       const { vertices } = this.props;
@@ -176,43 +178,56 @@ class MovingFigure extends Component {
 
     return (
       <div>
-        <div>
-          <label>
-            Коефіцієнт a:
-            <input type="number" name="a" value={a} onChange={this.handleInputChange} />
-          </label>
-          <label>
-            Коефіцієнт b:
-            <input type="number" name="b" value={b} onChange={this.handleInputChange} />
-          </label>
-          <button onClick={this.moveFigure}>Змінити фігуру</button>
+        <BackMenu/>
+        
+        <div className='figure-pagecontent'>
+        <div className='figure-values'>
+  <div className='coefficients'>
+    <label>
+      Коефіцієнт a:
+      <input type="number" name="a" value={a} onChange={this.handleInputChange} />
+    </label>
+    <label>
+      Коефіцієнт b:
+      <input type="number" name="b" value={b} onChange={this.handleInputChange} />
+    </label>
+   
+  </div>
+  <div className='vertices' style={{ position: 'absolute', zIndex: 1, marginLeft: '100px' }}>
+    {vertices.map((vertex, index) => (
+      <div key={index} className='vertex'>
+        <label>
+          {String.fromCharCode(65 + index)}x:
+          <input
+            type="number"
+            value={vertex.x}
+            onChange={(event) => this.handleVertexChange(index, 'x', event)}
+          />
+        </label>
+        <label>
+          {String.fromCharCode(65 + index)}y:
+          <input
+            type="number"
+            value={vertex.y}
+            onChange={(event) => this.handleVertexChange(index, 'y', event)}
+          />
+        </label>
+      </div>
+    ))}
+  </div>
+
         </div>
-        <div style={{ position: 'absolute', zIndex: 1, marginLeft: '100px' }}>
-          {vertices.map((vertex, index) => (
-            <div key={index}>
-              <label>
-                {String.fromCharCode(65 + index)}x:
-                <input
-                  type="number"
-                  value={vertex.x}
-                  onChange={(event) => this.handleVertexChange(index, 'x', event)}
-                />
-              </label>
-              <label>
-                {String.fromCharCode(65 + index)}y:
-                <input
-                  type="number"
-                  value={vertex.y}
-                  onChange={(event) => this.handleVertexChange(index, 'y', event)}
-                />
-              </label>
-            </div>
-          ))}
-        </div>
-        <div style={backgroundStyle}>
+        {/* <div  className='images-above'> */}
+          
+          <img className='book-image left' src={QuestionImage} alt="Question" />
+        {/* </div> */}
+        <div className = "square" style={backgroundStyle}>
           <Line vertices={vertices} a={a} b={b} />
           <Parallelogram vertices={vertices} />
         </div>
+        </div>
+        <button onClick={this.moveFigure} className = "active-newton-button upload-save a1">Змінити фігуру</button>
+        {/* <Button  onClick={this.moveFigure} text="Змінити фігуру" className= "active-newton-button upload-save a1"/> */}
       </div>
     );
   }
