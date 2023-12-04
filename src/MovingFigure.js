@@ -228,6 +228,7 @@ class MovingFigure extends Component {
         </div>
         <button onClick={this.moveFigure} className = "active-newton-button upload-save a1">Змінити фігуру</button>
         {/* <Button  onClick={this.moveFigure} text="Змінити фігуру" className= "active-newton-button upload-save a1"/> */}
+        
       </div>
     );
   }
