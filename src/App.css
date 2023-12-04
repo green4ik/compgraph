@@ -597,3 +597,85 @@ padding: 0;
   width: 150px;
   height: 150px;
 }
+.figure-pagecontent {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 70px;
+  height: 600px;
+}
+
+
+.figure-values {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-left: 50px;
+ margin-top :120px;
+  height: 400px;
+  width: 500px;
+  
+}
+
+.coefficients, .vertices {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.vertex {
+  margin-bottom: 15px;
+  margin-left: 100px;
+}
+.coefficients {
+  margin-right: 30px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+.figure-button {
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+input {
+  padding: 8px;
+  width: 80px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #4caf50;
+}
+svg {
+  margin-bottom: 600px;
+  margin-right: 300px;
+}
+.square {
+  height: 20px;
+  
+}
+.a1 {
+  margin-bottom: 30px;
+  margin-left: 170px;
+}
