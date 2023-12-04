@@ -68,75 +68,90 @@ class MovingFigure extends Component {
 
   validateParallelogram = (vertices) => {
     const [A, B, C, D] = vertices;
-
+  
     // Rule: Opposite sides are equal
     const sideAB = Math.sqrt((B.x - A.x) ** 2 + (B.y - A.y) ** 2);
     const sideCD = Math.sqrt((D.x - C.x) ** 2 + (D.y - C.y) ** 2);
     const sideBC = Math.sqrt((C.x - B.x) ** 2 + (C.y - B.y) ** 2);
     const sideDA = Math.sqrt((A.x - D.x) ** 2 + (A.y - D.y) ** 2);
-
-    const sidesEqual = sideAB === sideCD && sideBC === sideDA;
-
+    console.log(sideAB + "=" + sideCD);
+    console.log(sideBC + "=" + sideDA);
+  
+    const sidesEqual = Math.ceil(sideAB) === Math.ceil(sideCD) && Math.ceil(sideBC) === Math.ceil(sideDA);
+  
+    console.log("sides equal: " + sidesEqual);
+  
     // Rule: Opposite angles are equal
     const angleABCD = Math.atan2(B.y - A.y, B.x - A.x) - Math.atan2(D.y - C.y, D.x - C.x);
     const angleBCDA = Math.atan2(C.y - B.y, C.x - B.x) - Math.atan2(A.y - D.y, A.x - D.x);
-
-    const anglesEqual = Math.abs(angleABCD) === Math.abs(angleBCDA);
-
+    console.log(angleABCD + "=" + angleBCDA);
+  
+    const anglesEqual = Math.ceil(Math.abs(angleABCD)) === Math.ceil(Math.abs(angleBCDA));
+  
+    console.log("angles equal: " + anglesEqual);
+  
     return sidesEqual && anglesEqual;
   };
-
+  
+  
   moveFigure = () => {
     const { a, b, vertices } = this.state;
   
     // Function to mirror a point across the line y = ax + b
-    const mirrorPoint = (point, a, b, decimalPlaces = 2) => {
-        const x0 = point.x;
-        const y0 = point.y;
-      
-        // Step 1: Find the slope (a) of the line y = ax + b
-        // Step 2: Calculate the negative reciprocal of the slope
-        const mp = a !== 0 ? -1 / a : Infinity;
-      
-        // Step 3: Find the equation of the line perpendicular to y = ax + b
-        const mirroredLine = (x) => mp * (x - x0) + y0;
-      
-        // Step 4: Find the intersection point of the line and its perpendicular
-        const xIntersection = parseFloat(((mp * x0 - y0 + b) / (a + mp)).toFixed(decimalPlaces));
-        const yIntersection = parseFloat(mirroredLine(xIntersection).toFixed(decimalPlaces));
-      
-        // Step 5: Calculate the distance between the given point and the intersection point
-        const distance = parseFloat(Math.sqrt((x0 - xIntersection) ** 2 + (y0 - yIntersection) ** 2).toFixed(decimalPlaces));
-      
-        // Step 6: Move the same distance on the other side of the line
-        const xMirror = parseFloat((xIntersection - 2 * distance).toFixed(decimalPlaces));
-        const yMirror = parseFloat(mirroredLine(xMirror).toFixed(decimalPlaces));
-      
-        // Check for NaN values and prevent them
-        if (isNaN(xMirror) || isNaN(yMirror)) {
-          return { x: x0, y: y0 }; // Return the original point to prevent NaN
-        }
-      
-        return { x: xMirror, y: yMirror };
-      };
-      
-      
+    const mirrorPoint = (point, a, b) => {
+      const x0 = point.x;
+      const y0 = point.y;
     
+      // Step 1: Find the slope (a) of the line y = ax + b
+      // No need to pass 'a' and 'b' as parameters since they are already available in the component state
+      const m = a;
+    
+      // Step 2: Calculate the negative reciprocal of the slope (mp)
+      const mp = -1 / m;
+    
+      // Step 3: Find the equation of the line perpendicular to y = ax + b
+      // and passing through the given point (x0, y0)
+      const mirroredLine = (x) => mp * (x - x0) + y0;
+    
+      // Step 4: Find the intersection point of the line and its perpendicular
+      const xIntersection = (b - y0 + mp * x0) / (mp - m);
+      const yIntersection = mirroredLine(xIntersection);
+    
+      // Step 5: Calculate the distance between the given point and the intersection point
+      const distance = Math.sqrt((xIntersection - x0) ** 2 + (yIntersection - y0) ** 2);
+    
+      // Step 6: Move the same distance on the other side of the line
+      const xMirror = 2 * xIntersection - x0;
+      const yMirror = 2 * yIntersection - y0;
+    
+      // Round the results to two decimal places
+      const roundedX = parseFloat(xMirror.toFixed(2));
+      const roundedY = parseFloat(yMirror.toFixed(2));
+    
+      // Check for NaN values and return the mirrored point
+      if (!isNaN(roundedX) && !isNaN(roundedY)) {
+        return { x: roundedX, y: roundedY };
+      } else {
+        // Handle NaN values, for example, by returning the original point
+        console.warn('NaN values encountered. Returning the original point.');
+        return point;
+      }
+    };
 
-    const originalPoint = { x: 2, y: 3 };
-    const f = 3; // Replace with your desired 'a' value
-    const k = 5; // Replace with your desired 'b' value
+    // const originalPoint = { x: 2, y: 3 };
+    // const f = 3; // Replace with your desired 'a' value
+    // const k = 5; // Replace with your desired 'b' value
 
-    const mirroredPoint = mirrorPoint(originalPoint, f, k);
-    console.log(mirroredPoint);
+    // const mirroredPoint = mirrorPoint(originalPoint, f, k);
+    // console.log(mirroredPoint);
   
     // Mirror all vertices
     const mirroredVertices = vertices.map((vertex) => mirrorPoint(vertex, a, b));
   
     // Validate the new parallelogram
-    const isValidParallelogram = this.validateParallelogram(mirroredVertices);
+    const isValidParallelogram = this.validateParallelogram(vertices);
   
-    if (true) {
+    if (isValidParallelogram) {
       this.setState({ vertices: mirroredVertices });
     } else {
       // Handle invalid parallelogram, e.g., show an error message

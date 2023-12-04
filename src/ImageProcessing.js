@@ -10,6 +10,8 @@ function CustomThumb(props) {
     </div>
   );
 }
+var isImageUploaded = false;
+
 const ImageProcessing = () => {
   const [image, setImage] = useState(null);
   const [points, setPoints] = useState([]);
@@ -34,6 +36,7 @@ const ImageProcessing = () => {
         setImage(img);
         setPoints([]); // Clear previous points when a new image is loaded
         setPreviewImage(img); // Set the preview image initially
+        isImageUploaded = true;
       };
     };
 
@@ -105,28 +108,31 @@ const ImageProcessing = () => {
 
 
   const handleMouseMove = (e) => {
-    if (previewImage) {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-  
-      canvas.width = previewImage.width;
-      canvas.height = previewImage.height;
-  
-      ctx.drawImage(previewImage, 0, 0, previewImage.width, previewImage.height);
-  
-      const x = e.nativeEvent.offsetX;
-      const y = e.nativeEvent.offsetY;
-  
-      const pixel = ctx.getImageData(x, y, 1, 1).data;
-  
-      setPointedPixel({
-        x,
-        y,
-        rgb:  [pixel[0], pixel[1], pixel[2]],
-        cmyk: convert.rgb.cmyk(pixel[0], pixel[1], pixel[2]),
-        hsl: convert.rgb.hsl(pixel[0], pixel[1], pixel[2]),
-      });
+    if(isImageUploaded){
+      if (previewImage) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+    
+        canvas.width = previewImage.width;
+        canvas.height = previewImage.height;
+    
+        ctx.drawImage(previewImage, 0, 0, previewImage.width, previewImage.height);
+    
+        const x = e.nativeEvent.offsetX;
+        const y = e.nativeEvent.offsetY;
+    
+        const pixel = ctx.getImageData(x, y, 1, 1).data;
+    
+        setPointedPixel({
+          x,
+          y,
+          rgb:  [pixel[0], pixel[1], pixel[2]],
+          cmyk: convert.rgb.cmyk(pixel[0], pixel[1], pixel[2]),
+          hsl: convert.rgb.hsl(pixel[0], pixel[1], pixel[2]),
+        });
+      }
     }
+    
   };
 
   useEffect(() => {
